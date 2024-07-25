@@ -1,3 +1,5 @@
+const { json } = require("node:stream/consumers");
+
 const fs = require("fs").promises;
 
 // THEN-CATCH SOLUTION BELOW THIS LINE
@@ -21,10 +23,10 @@ readFile('firstname.txt')
     return readFile('hobbies.txt');
   })
   .then(data => {
-    hobbies = data.trim().split(',');
-    const hobby1 = hobbies[0].trim().replace(/"/g, '');
-    const hobby2 = hobbies[1].trim().replace(/"/g, '');
-    console.log(`${firstName} ${lastName} is ${age} years old and his hobbies are ${hobby1.toString} and ${hobby2.toString}`);
+    hobbies = JSON.parse(data.trim());
+    let hobby1 = hobbies[0];
+    let hobby2 = hobbies[1];
+    console.log(`${firstName} ${lastName} is ${age} years old and his hobbies are ${hobby1} and ${hobby2}`);
   })
   .catch(error => {
     console.log(error);
@@ -39,8 +41,9 @@ async function readFiles() {
     const age = (await fs.readFile('age.txt', 'utf-8')).trim();
     const hobbies = (await fs.readFile('hobbies.txt', 'utf-8')).trim().split(',');
 
-    const hobby1 = hobbies[0].trim().replace(/"/g, '');
-    const hobby2 = hobbies[1].trim().replace(/"/g, '');
+    hobbiesjson = JSON.parse(hobbies);
+    let hobby1 = hobbiesjson[0];
+    let hobby2 = hobbiesjson[1];
 
     console.log(`${firstName} ${lastName} is ${age} years old and his hobbies are ${hobby1} and ${hobby2}`);
   } catch (error) {
